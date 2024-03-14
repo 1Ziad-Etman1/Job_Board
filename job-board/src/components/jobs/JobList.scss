@@ -1,0 +1,51 @@
+@import "../../vars.scss";
+
+.job-list-container {
+	max-width: 30rem;
+	margin: 30px auto;
+	padding: 1.5rem;
+}
+
+.job-list-title {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+}
+
+.job-list {
+	list-style: none;
+	padding: 0;
+}
+
+.job-item {
+	border: 1px solid $txt;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	margin-bottom: 1rem;
+}
+
+.job-item-title {
+	font-size: 1.25rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
+.job-item-company,
+.job-item-location {
+	color: $txt;
+	margin-bottom: 0.5rem;
+}
+
+.job-item-link {
+	display: inline-block;
+	background-color: $m2;
+	color: $txt;
+	padding: 0.5rem 1rem;
+	border-radius: 0.25rem;
+	text-decoration: none;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: $p;
+	}
+}

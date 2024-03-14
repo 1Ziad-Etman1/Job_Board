@@ -1,0 +1,29 @@
+@import "../../vars.scss";
+
+.header {
+	background: $p;
+	width: 100%;
+	padding: 18px;
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	left: 0;
+
+	.logo {
+		text-decoration: none;
+		color: $txt;
+		font-size: 22px;
+		font-weight: 600;
+	}
+	.links {
+		display: flex;
+		gap: 30px;
+
+		a {
+			text-decoration: none;
+			font-size: 19px;
+			color: $txt;
+		}
+	}
+}

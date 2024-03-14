@@ -1,0 +1,68 @@
+@import "../../vars.scss";
+
+.job-details-container {
+	max-width: 30rem;
+	margin: 48px auto;
+	padding: 1.5rem;
+	background-color: $m1;
+	border-radius: 0.5rem;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
+
+	.job-title {
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-bottom: 1rem;
+	}
+
+	.job-info {
+		color: $txt;
+		margin-bottom: 0.5rem;
+
+		&-label {
+			font-weight: bold;
+		}
+
+		&-value {
+			margin-left: 0.5rem;
+		}
+	}
+
+	.job-description {
+		margin-bottom: 1.5rem;
+	}
+
+	.job-requirements {
+		.job-requirements-title {
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+		}
+
+		.job-requirements-list {
+			list-style-type: disc;
+			padding-left: 1.5rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.job-requirement {
+			color: $txt;
+		}
+	}
+
+	.apply-button {
+		display: block;
+		width: 100%;
+		padding: 0.75rem 1rem;
+		background-color: $p;
+		color: #ffffff;
+		text-decoration: none;
+		text-align: center;
+		border: none;
+		border-radius: 0.375rem;
+		cursor: pointer;
+		transition: background-color 0.15s ease-in-out;
+
+		&:hover {
+			background-color: $m2;
+		}
+	}
+}

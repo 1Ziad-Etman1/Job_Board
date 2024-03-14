@@ -1,0 +1,27 @@
+@import "../../../vars.scss";
+
+.candidate-dashboard-container {
+	max-width: 30rem;
+	margin: 40px auto;
+	padding: 1.5rem;
+}
+
+.candidate-dashboard-title {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+}
+
+.candidate-details {
+	background-color: $m1;
+	border: 1px solid $m2;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.detail-label {
+	font-weight: bold;
+}
