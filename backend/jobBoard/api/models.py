@@ -25,7 +25,7 @@ class Employer(models.Model):
 class Candidate(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     contact_email = models.EmailField()
-    contact_phone = models.CharField(max_length=20)
+    contact_phone = models.CharField(max_length=14)
     skills = models.TextField()
     experience = models.CharField(max_length=100)
     education = models.CharField(max_length=100)
