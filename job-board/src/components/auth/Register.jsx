@@ -75,6 +75,7 @@ const Register = () => {
 		} catch (error) {
 			console.log("Error in Registration: ", error);
 		}
+		window.location.href = "/login";
 	};
 
 	return (

@@ -50,7 +50,9 @@ const JobDetails = () => {
 	}, []);
 
 	const filteredApplicants = applications.filter(
-		(application) => application.job === jobId
+		(application) =>
+			application.job == jobId &&
+			job.employer == localStorage.getItem("username")
 	);
 	return (
 		<div>
@@ -86,20 +88,20 @@ const JobDetails = () => {
 				)}
 			</div>
 			{!loading
-				? localStorage.getItem("isCandidate") === "false" && (
-						<></>
-						// <div className="applicants-section">
-						// 	<h3 className="section-title">Applicants</h3>
-						// 	{filteredApplicants.map((applicant) => (
-						// 		<div
-						// 			className="applicant-details"
-						// 			key={applicant.id}
-						// 		>
-						// 			<p>Name: {applicant.name}</p>
-						// 			<p>Email: {applicant.contact_email}</p>
-						// 		</div>
-						// 	))}
-						// </div>
+				? localStorage.getItem("isCandidate") == "false" && (
+						// <></>
+						<div className="applicants-section">
+							<h3 className="section-title">Applicants</h3>
+							{filteredApplicants.map((applicant) => (
+								<div
+									className="applicant-details"
+									key={applicant.id}
+								>
+									<p>Name: {applicant.name}</p>
+									<p>Email: {applicant.contact_email}</p>
+								</div>
+							))}
+						</div>
 				  )
 				: localStorage.getItem("isCandidate") === "false" && (
 						<div className="f">

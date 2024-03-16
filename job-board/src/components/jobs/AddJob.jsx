@@ -31,8 +31,7 @@ const AddJob = () => {
 				formData
 			);
 			console.log("Job added successfully:", response.data);
-			// Optionally, you can redirect the user to a different page after successful job creation
-			// window.location.href = '/jobs'; // Replace '/jobs' with the desired URL
+			window.location.href = "/jobs";
 		} catch (error) {
 			console.error("Failed to add job:", error);
 		}

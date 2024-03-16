@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const Header = () => {
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [isCandidate, setIsCandidate] = useState(false);
+	const [isCandidate, setIsCandidate] = useState("");
 	const [username, setUsername] = useState("");
 	const handleLogout = () => {
 		localStorage.removeItem("authToken");
@@ -12,6 +12,7 @@ const Header = () => {
 		localStorage.removeItem("username");
 		localStorage.removeItem("isCandidate");
 		setLoggedIn(false);
+		window.location.href = "/login";
 	};
 
 	useEffect(() => {
@@ -20,7 +21,11 @@ const Header = () => {
 			setLoggedIn(true);
 			const x = localStorage.getItem("isCandidate") == "true";
 			setUsername(localStorage.getItem("username"));
-			setIsCandidate(x);
+			if (x == true) {
+				setIsCandidate("c");
+			} else {
+				setIsCandidate("e");
+			}
 		} else {
 			setLoggedIn(false);
 		}
@@ -34,7 +39,13 @@ const Header = () => {
 						Job Board
 					</Link>
 					<p className="link">
-						Hello {isCandidate ? <>Candidate </> : <>Employer</>}{" "}
+						{isCandidate == "c" ? (
+							<>Hello Candidate </>
+						) : isCandidate == "e" ? (
+							<>Hello Employer</>
+						) : (
+							<></>
+						)}{" "}
 						{username}
 					</p>
 				</div>
@@ -45,17 +56,19 @@ const Header = () => {
 							<Link to="/jobs" className="link">
 								Jobs
 							</Link>
-							{!isCandidate ? (
+							{isCandidate == "e" ? (
 								<Link to="/employer-dashboard" className="link">
 									Employer Dashboard
 								</Link>
-							) : (
+							) : isCandidate == "c" ? (
 								<Link
 									to="/candidate-dashboard"
 									className="link"
 								>
 									Candidate Dashboard
 								</Link>
+							) : (
+								<></>
 							)}
 
 							<Link

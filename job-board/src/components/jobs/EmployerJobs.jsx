@@ -11,11 +11,10 @@ const EmployerJobs = () => {
 					"http://127.0.0.1:8000/apis/jobs/"
 				);
 				const jbs = response.data.filter(
-					(job) => (job.employer = localStorage.getItem("username"))
+					(job) => job.employer == localStorage.getItem("username")
 				);
-
-				setJobs(response.data);
-				// Handle the fetched data here, for example, set it to state
+				console.log(jbs);
+				setJobs(jbs);
 			} catch (error) {
 				console.error("Failed to fetch jobs:", error);
 			}
