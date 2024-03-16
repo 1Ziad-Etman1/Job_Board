@@ -1,73 +1,94 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import "./ApplicationForm.scss";
+
 const ApplicationForm = () => {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [resume, setResume] = useState(null);
-	const [coverLetter, setCoverLetter] = useState("");
+	const { jobId } = useParams();
+	const [formData, setFormData] = useState({
+		name: "",
+		contact_email: "",
+		resume: null,
+		cover_letter: "",
+	});
 
-	const handleSubmit = (event) => {
-		event.preventDefault();
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setFormData({ ...formData, [name]: value });
+	};
 
-		console.log("Form submitted:", { name, email, resume, coverLetter });
+	const handleFileChange = (e) => {
+		const file = e.target.files[0];
+		setFormData({ ...formData, resume: file });
+	};
 
-		setName("");
-		setEmail("");
-		setResume(null);
-		setCoverLetter("");
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const formDataToSend = new FormData();
+		console.log(jobId);
+		formDataToSend.append("name", formData.name);
+		formDataToSend.append("contact_email", formData.contact_email);
+		formDataToSend.append("job", jobId);
+		formDataToSend.append("cover_letter", formData.cover_letter);
+		formDataToSend.append("resume", formData.resume);
+		try {
+			const response = await axios.post(
+				"http://127.0.0.1:8000/apis/applications/",
+				formDataToSend
+			);
+			console.log("Application submitted successfully:", response.data);
+			window.location.href = "/";
+		} catch (error) {
+			console.error("Failed to submit application:", error);
+		}
 	};
 
 	return (
 		<div className="form-container">
 			<h2 className="form-title">Job Application Form</h2>
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit}>
 				<div>
-					<label htmlFor="name" className="block mb-1">
-						Name:
-					</label>
+					<label htmlFor="name">Name:</label>
 					<input
 						type="text"
 						id="name"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
+						name="name"
+						value={formData.name}
+						onChange={handleChange}
 						className="form-input"
 						required
 					/>
 				</div>
 				<div>
-					<label htmlFor="email" className="block mb-1">
-						Email:
-					</label>
+					<label htmlFor="contact_email">Contact Email:</label>
 					<input
 						type="email"
-						id="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						id="contact_email"
+						name="contact_email"
+						value={formData.contact_email}
+						onChange={handleChange}
 						className="form-input"
 						required
 					/>
 				</div>
 				<div>
-					<label htmlFor="resume" className="block mb-1">
-						Resume:
-					</label>
+					<label htmlFor="resume">Resume:</label>
 					<input
 						type="file"
 						id="resume"
-						accept=".pdf,.doc,.docx"
-						onChange={(e) => setResume(e.target.files[0])}
+						name="resume"
+						onChange={handleFileChange}
 						className="form-input"
 						required
 					/>
 				</div>
 				<div>
-					<label htmlFor="coverLetter" className="block mb-1">
-						Cover Letter:
-					</label>
+					<label htmlFor="cover_letter">Cover Letter:</label>
 					<textarea
-						id="coverLetter"
-						value={coverLetter}
-						onChange={(e) => setCoverLetter(e.target.value)}
+						id="cover_letter"
+						name="cover_letter"
+						value={formData.cover_letter}
+						onChange={handleChange}
 						className="form-input"
 						rows="4"
 						required

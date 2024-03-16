@@ -4,24 +4,41 @@
 	max-width: 30rem;
 	margin: 40px auto;
 	padding: 1.5rem;
-}
 
-.employer-dashboard-title {
-	font-size: 1.5rem;
-	font-weight: bold;
-	margin-bottom: 1rem;
-}
+	.l {
+		display: flex;
+		justify-content: space-between;
+		.employer-dashboard-title {
+			font-size: 1.5rem;
+			font-weight: bold;
+			margin-bottom: 1rem;
+		}
+		.jobs {
+			display: inline-block;
+			background-color: rgb(8, 110, 42);
+			color: $txt;
+			padding: 0.5rem 1rem;
+			border-radius: 0.25rem;
+			text-decoration: none;
+			transition: background-color 0.6s ease;
+			margin-bottom: 8px;
+			&:hover {
+				background-color: $p;
+			}
+		}
+	}
 
-.employer-details {
-	background-color: $m1;
-	border: 1px solid $m2;
-	border-radius: 0.5rem;
-	padding: 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-}
+	.employer-details {
+		background-color: $m1;
+		border: 1px solid $m2;
+		border-radius: 0.5rem;
+		padding: 1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
 
-.detail-label {
-	font-weight: bold;
+	.detail-label {
+		font-weight: bold;
+	}
 }

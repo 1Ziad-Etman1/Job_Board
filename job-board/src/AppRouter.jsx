@@ -8,6 +8,8 @@ import CandidateD from "./components/dashboards/candidate/CandidateD";
 import EmployerD from "./components/dashboards/employer/EmployerD";
 import JobList from "./components/jobs/JobList";
 import JobDetails from "./components/jobs/JobDetails";
+import AddJob from "./components/jobs/AddJob";
+import EmployerJobs from "./components/jobs/EmployerJobs";
 import ApplicationForm from "./components/job-application/ApplicationForm";
 import NotFound from "./components/error/NotFound";
 
@@ -24,13 +26,19 @@ function AppRouter() {
 						<Route exact path="/jobs" element={<JobList />} />
 						<Route
 							exact
-							path="/jobs/:id"
+							path="/jobs/:jobId"
 							element={<JobDetails />}
 						/>
+						<Route exact path="/add-job/" element={<AddJob />} />
 						<Route
 							exact
 							path="/employer-dashboard"
 							element={<EmployerD />}
+						/>
+						<Route
+							exact
+							path="/employer-jobs/:id"
+							element={<EmployerJobs />}
 						/>
 						<Route
 							exact
@@ -39,7 +47,7 @@ function AppRouter() {
 						/>
 						<Route
 							exact
-							path="/apply/:id"
+							path="/apply/:jobId"
 							element={<ApplicationForm />}
 						/>
 						<Route path="*" element={<NotFound />} />{" "}

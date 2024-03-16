@@ -12,6 +12,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
+    #Login
+    path('apis/login/', views.LoginView.as_view()),
+    #Register
+    path('apis/register/', views.RegisterView.as_view()),
     #JOB Model
     path('apis/jobs/', views.Job_list),
     path('apis/jobs/<int:pk>', views.Job_pk),

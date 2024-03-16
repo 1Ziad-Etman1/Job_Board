@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "./JobList.scss";
+import "./EmployerJobs.scss";
 import { Link } from "react-router-dom";
 import axios from "axios";
-const JobList = () => {
+const EmployerJobs = () => {
 	const [jobs, setJobs] = useState([]);
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
 					"http://127.0.0.1:8000/apis/jobs/"
+				);
+				const jbs = response.data.filter(
+					(job) => (job.employer = localStorage.getItem("username"))
 				);
 
 				setJobs(response.data);
@@ -22,16 +25,7 @@ const JobList = () => {
 	}, []);
 	return (
 		<div className="job-list-container">
-			<div className="h">
-				<h2 className="job-list-title">Job Listings</h2>
-				{localStorage.isCandidate == "false" ? (
-					<Link to="/add-job/" className="add-btn">
-						Add Job
-					</Link>
-				) : (
-					<></>
-				)}
-			</div>
+			<h2 className="job-list-title">Job Listings</h2>
 
 			<ul className="job-list">
 				{jobs.map((job, index) => (
@@ -49,4 +43,4 @@ const JobList = () => {
 	);
 };
 
-export default JobList;
+export default EmployerJobs;

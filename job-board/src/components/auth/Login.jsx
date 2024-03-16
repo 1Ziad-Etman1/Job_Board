@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./Login.scss"; // Import SCSS file
+import axios from "axios";
 
 const Login = () => {
 	const [formData, setFormData] = useState({
-		email: "",
+		contact_email: "",
 		password: "",
 	});
 
@@ -16,8 +17,39 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log("Form submitted:", formData);
-		// You can add login logic here
+		localStorage.removeItem("authToken");
+		localStorage.removeItem("userData");
+		localStorage.removeItem("username");
+		localStorage.removeItem("isCandidate");
+
+		axios
+			.post("http://localhost:8000/apis/login/", {
+				contact_email: formData.contact_email,
+				password: formData.password,
+			})
+			.then((response) => {
+				console.log(response.data);
+				if (response.data.token) {
+					// Store token in local storage securely
+					localStorage.setItem("authToken", response.data.token);
+					const username = response.data.username;
+					const isCandidate = response.data.isCandidate;
+					// const userData = {
+					// 	username: username,
+					// 	email: response.data.contact_email,
+					// 	isCandidate: isCandidate,
+					// };
+					localStorage.setItem("username", username);
+					localStorage.setItem("isCandidate", isCandidate);
+					window.location.href = "/";
+				} else {
+					console.log("Login failed");
+				}
+			})
+			.catch((error) => {
+				console.log("failed to login");
+				console.log(error);
+			});
 	};
 
 	return (
@@ -31,8 +63,8 @@ const Login = () => {
 					<input
 						type="email"
 						id="email"
-						name="email"
-						value={formData.email}
+						name="contact_email"
+						value={formData.contact_email}
 						onChange={handleChange}
 						className="form-input"
 						required

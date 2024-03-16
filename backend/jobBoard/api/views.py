@@ -1,13 +1,93 @@
 from django.shortcuts import render
 from .models import Job, Employer, Candidate, JobApplication
 from rest_framework.decorators import api_view
-from .serializers import JobSerializer, EmployerSerializer, CandidateSerializer, JobApplicationSerializer
+from .serializers import JobSerializer, EmployerSerializer, CandidateSerializer, JobApplicationSerializer, LoginSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics, viewsets
+from rest_framework.authtoken.models import Token
+from .backends import CandidateBackend, EmployerBackend
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth import get_user_model
 
 
+#Register VIEW
+class RegisterView(APIView):
+    def post(self, request):
+        # Extract registration data from request
+        username = request.data.get('username')
+        password = request.data.get('password')
+        contact_email = request.data.get('contact_email')
+        contact_phone = request.data.get('contact_phone')
+        if request.data.get('skills'):
+            user_type='candidate'
+            skills = request.data.get('skills')
+            experience = request.data.get('experience')
+            education= request.data.get('education')
+        else:
+            user_type='employer'
+            company_name=request.data.get('company_name')
+        # user_type = request.data.get('skills')
+
+        # Validate required fields
+        if not username or not password or not contact_email or not user_type:
+            return Response({'message': 'Missing required fields'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new user
+        User = get_user_model()
+        user = User.objects.create_user(username=username, password=password)
+
+        # Create corresponding profile based on user type
+        if user_type == 'candidate':
+            Candidate.objects.create(user=user, contact_email=contact_email, contact_phone=contact_phone,username=username, password=password, skills=skills, education=education, experience=experience)
+        elif user_type == 'employer':
+            Employer.objects.create(user=user, contact_email=contact_email, contact_phone=contact_phone, company_name=company_name, username=username, password=password)
+        else:
+            # Invalid user type
+            user.delete()  # Rollback user creation
+            return Response({'message': 'Invalid user type'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Registration successful'}, status=status.HTTP_201_CREATED)
+
+
+#LOGIN VIEW
+class LoginView(APIView):
+    def post(self, request):
+        email = request.data.get('contact_email')
+        password = request.data.get('password')
+
+        if not email or not password:
+            return Response({'message': 'Missing email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Try candidate authentication first
+        candidate = Candidate.objects.filter(contact_email=email).first()
+        # print(f"\n\n\nCandidate in Login View:\n{candidate}\ncandidate.user: {candidate.user}\n\n\n")
+        if candidate:
+            # Candidate authenticated
+            token, _ = Token.objects.get_or_create(user=candidate.user)
+            return Response({
+                'token': token.key,
+                'message': 'Login successful for candidate',
+                'username': candidate.username,
+                'isCandidate': True
+            }, status=status.HTTP_200_OK)
+
+        # If candidate fails, try employer authentication
+        employer = Employer.objects.filter(contact_email=email).first()
+        
+        if employer:
+            # Employer authenticated
+            token, _ = Token.objects.get_or_create(user=employer.user)
+            return Response({
+                'token': token.key,
+                'message': 'Login successful for employer',
+                'username': employer.username,
+                'isCandidate': False
+            }, status=status.HTTP_200_OK)
+
+        # Authentication failed for both
+        raise AuthenticationFailed('Invalid email or password')
 
 #JOB MODEL
 @api_view(['GET', 'POST'])
@@ -19,6 +99,8 @@ def Job_list(request):
         return Response(serializer.data)
     #POST
     elif request.method == 'POST':
+        print('hello')
+        print(request.data)
         serializer = JobSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
